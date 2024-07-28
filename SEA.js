@@ -1,181 +1,169 @@
-(function () {
-    'use strict';
-
-    var preferredResolution = '1080p';
-    var searchList = [
+window.onload = function () {
+    const preferredResolution = '1080p';
+    const sources = [
         {
-            title: 'AniTube.in.ua',
-            url: 'https://anitube.in.ua/',
-            search: '/?do=search&subaction=search&story=',
-            video: {
-                list: '.baseblock',
-                title: '.title a',
-                link: '.title a',
-                quality: '.quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "AniTube.in.ua",
+            url: "https://anitube.in.ua/index.php?do=search&subaction=search&story=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.baseblock').forEach(function (block) {
+                    const titleElement = block.querySelector('.title a');
+                    const qualityElement = block.querySelector('.quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'UAnime.org',
-            url: 'https://uanime.org/',
-            search: '/search?query=',
-            video: {
-                list: '.post',
-                title: '.post__title a',
-                link: '.post__title a',
-                quality: '.post__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "UAnime.org",
+            url: "https://uanime.org/search?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.post').forEach(function (post) {
+                    const titleElement = post.querySelector('.post__title a');
+                    const qualityElement = post.querySelector('.post__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'Animan.ua',
-            url: 'https://animan.ua/',
-            search: '/search/?query=',
-            video: {
-                list: '.block',
-                title: '.block__title a',
-                link: '.block__title a',
-                quality: '.block__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "Animan.ua",
+            url: "https://animan.ua/search/?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.block').forEach(function (block) {
+                    const titleElement = block.querySelector('.block__title a');
+                    const qualityElement = block.querySelector('.block__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'NMAni',
-            url: 'https://nmani.com/',
-            search: '/search/?query=',
-            video: {
-                list: '.movie',
-                title: '.movie__title a',
-                link: '.movie__title a',
-                quality: '.movie__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "NMAni",
+            url: "https://nmani.com/search/?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.movie').forEach(function (movie) {
+                    const titleElement = movie.querySelector('.movie__title a');
+                    const qualityElement = movie.querySelector('.movie__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'Gwean',
-            url: 'https://gwean.com/',
-            search: '/search/?query=',
-            video: {
-                list: '.content',
-                title: '.content__title a',
-                link: '.content__title a',
-                quality: '.content__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "Gwean",
+            url: "https://gwean.com/search/?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.content').forEach(function (content) {
+                    const titleElement = content.querySelector('.content__title a');
+                    const qualityElement = content.querySelector('.content__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'UkrDub',
-            url: 'https://ukrdub.com/',
-            search: '/search/?query=',
-            video: {
-                list: '.item',
-                title: '.item__title a',
-                link: '.item__title a',
-                quality: '.item__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "UkrDub",
+            url: "https://ukrdub.com/search/?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.item').forEach(function (item) {
+                    const titleElement = item.querySelector('.item__title a');
+                    const qualityElement = item.querySelector('.item__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         },
         {
-            title: 'FanVoxUA',
-            url: 'https://fanvoxua.com/',
-            search: '/search/?query=',
-            video: {
-                list: '.post',
-                title: '.post__title a',
-                link: '.post__title a',
-                quality: '.post__quality'
-            },
-            onLoad: function (data, element) {
-                var results = $(data).find(this.video.list);
-                var items = [];
-                results.each((index, item) => {
-                    var title = $(item).find(this.video.title).text();
-                    var link = $(item).find(this.video.link).attr('href');
-                    var quality = $(item).find(this.video.quality).text() || preferredResolution;
-                    items.push({ title, link, quality });
+            name: "FanVoxUA",
+            url: "https://fanvoxua.com/search/?query=",
+            extractor: function (document) {
+                const results = [];
+                document.querySelectorAll('.post').forEach(function (post) {
+                    const titleElement = post.querySelector('.post__title a');
+                    const qualityElement = post.querySelector('.post__quality');
+                    if (titleElement) {
+                        results.push({
+                            title: titleElement.textContent.trim(),
+                            url: titleElement.href,
+                            quality: qualityElement ? qualityElement.textContent.trim() : preferredResolution
+                        });
+                    }
                 });
-                element.addItems(items);
+                return results;
             }
         }
     ];
 
-    var element = {
-        addItems: function (items) {
-            // Function to handle the addition of items to the DOM or relevant component
-            console.log(items);
-        }
-    };
+    function fetchResults(source, query) {
+        return fetch(source.url + encodeURIComponent(query))
+            .then(response => response.text())
+            .then(text => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+                return source.extractor(doc);
+            });
+    }
 
-    searchList.forEach(function (source) {
-        var query = 'аниме';  // Replace with your search query
-        $.ajax({
-            url: source.url + source.search + encodeURIComponent(query),
-            success: function (data) {
-                source.onLoad(data, element);
-            },
-            error: function () {
-                console.error('Failed to load data from', source.title);
-            }
+    function displayResults(results) {
+        const container = document.getElementById('results');
+        container.innerHTML = '';
+        results.forEach(function (result) {
+            const element = document.createElement('div');
+            element.className = 'result';
+            element.innerHTML = `<a href="${result.url}" target="_blank">${result.title}</a> (${result.quality})`;
+            container.appendChild(element);
         });
-    });
-})();
+    }
+
+    document.getElementById('searchForm').onsubmit = function (event) {
+        event.preventDefault();
+        const query = document.getElementById('query').value;
+        const promises = sources.map(source => fetchResults(source, query));
+        Promise.all(promises).then(results => {
+            const allResults = results.flat();
+            displayResults(allResults);
+        });
+    };
+};
